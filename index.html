@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BEWÖÖD pricing case: digest and answers</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#EEF0EA; --surface:#FFFFFF; --ink:#1F2420; --muted:#5B635C; --line:#D3D8CF;
+  --walnut:#6B4430; --pear:#C08347; --forest:#2E6150; --navy:#34457A; --berry:#A63D4F;
+  --pear-soft:#F4E5D2; --forest-soft:#DCEBE3; --berry-soft:#F6DFE3; --navy-soft:#E1E6F3;
+  --w1:#C99A6B; --w2:#B07D4F; --w3:#DDB68A; --w4:#8E5E3B; --w5:#E8CBA4;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#151916; --surface:#1E231F; --ink:#E7EAE3; --muted:#A2AAA1; --line:#343B35;
+    --walnut:#D9A985; --pear:#E3AE72; --forest:#82C4A9; --navy:#A2B4EA; --berry:#EB8C9D;
+    --pear-soft:#392D1F; --forest-soft:#1C3229; --berry-soft:#3A2228; --navy-soft:#232A40;
+    --w1:#A87A4E; --w2:#8C603A; --w3:#C29767; --w4:#6E4529; --w5:#D2AE80;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.6}
+h1,h2,h3,h4{font-family:"Palatino Linotype","Book Antiqua",Palatino,"URW Palladio L",Georgia,serif;font-weight:600;line-height:1.2;margin:0}
+h1{font-size:clamp(2.1rem,5vw,3.3rem);letter-spacing:-.01em}
+h2{font-size:1.9rem;margin-bottom:.6rem}
+h3{font-size:1.3rem;margin:1.6rem 0 .5rem}
+p{margin:.6rem 0}
+.num,td,th{font-variant-numeric:tabular-nums}
+a{color:var(--forest)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--pear);outline-offset:2px}
+
+/* layout */
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px;display:grid;grid-template-columns:220px 1fr;gap:48px}
+nav.toc{position:sticky;top:20px;align-self:start;padding-top:36px;font-size:.92rem}
+nav.toc ol{list-style:none;padding:0;margin:0;border-left:2px solid var(--line)}
+nav.toc li a{display:block;padding:6px 0 6px 14px;color:var(--muted);text-decoration:none;margin-left:-2px;border-left:2px solid transparent}
+nav.toc li a:hover{color:var(--ink);border-left-color:var(--pear)}
+main{min-width:0;padding-bottom:80px}
+section{padding:44px 0 8px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+.prose{max-width:72ch}
+@media (max-width:900px){.wrap{grid-template-columns:1fr;gap:0}nav.toc{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:40px 0 20px}
+.hero p.lede{font-size:1.15rem;color:var(--muted);max-width:56ch}
+.hero svg{width:100%;height:auto}
+@media (max-width:700px){.hero{grid-template-columns:1fr}}
+.facet{transform-origin:200px 100px;animation:drop .7s cubic-bezier(.2,.7,.2,1) both}
+@keyframes drop{from{opacity:0;transform:scale(.6) rotate(-6deg)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.facet{animation:none}}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.facts span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.88rem}
+
+/* panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:18px 0}
+.callout{border-left:5px solid var(--forest);background:var(--forest-soft);border-radius:4px 12px 12px 4px;padding:14px 18px;margin:18px 0}
+.callout.warn{border-color:var(--berry);background:var(--berry-soft)}
+.callout.wood{border-color:var(--pear);background:var(--pear-soft)}
+.callout.navy{border-color:var(--navy);background:var(--navy-soft)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+
+/* decision cards */
+.decisions{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:18px 0}
+.dcard{background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:6px 6px 14px 14px;padding:16px 18px}
+.dcard h4{font-size:1.15rem;margin-bottom:4px}
+.dcard .tool{font-size:.85rem;color:var(--muted)}
+.dcard .verdict{margin-top:10px;font-weight:600;color:var(--c)}
+.dcard .price{font-size:1.9rem;font-family:"Palatino Linotype",Palatino,Georgia,serif;font-weight:600;color:var(--c)}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:.95rem;margin:10px 0}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;background:var(--bg)}
+td.r,th.r{text-align:right}
+tr.hl td{background:var(--pear-soft);font-weight:600}
+tr.good td{background:var(--forest-soft)}
+.tablewrap{overflow-x:auto}
+
+/* timeline */
+.timeline{list-style:none;padding:0;margin:18px 0;position:relative}
+.timeline::before{content:"";position:absolute;left:62px;top:6px;bottom:6px;width:3px;background:linear-gradient(var(--w1),var(--w4))}
+.timeline li{display:grid;grid-template-columns:52px 1fr;gap:30px;padding:8px 0;position:relative}
+.timeline li::after{content:"";position:absolute;left:56px;top:15px;width:15px;height:15px;border-radius:3px;transform:rotate(45deg);background:var(--surface);border:3px solid var(--pear)}
+.timeline .yr{font-weight:700;color:var(--walnut);text-align:right;padding-top:2px}
+
+/* channel strip and price split bars */
+.strip{display:flex;height:44px;border-radius:8px;overflow:hidden;margin:10px 0 4px;font-size:.85rem;font-weight:600}
+.strip div{display:flex;align-items:center;justify-content:center;color:#fff;white-space:nowrap;overflow:hidden;padding:0 4px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.85rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+/* competitor dot plot */
+.dotplot{position:relative;margin:14px 0}
+.dp-row{display:grid;grid-template-columns:170px 1fr 70px;align-items:center;height:30px;font-size:.9rem}
+.dp-row.me{font-weight:700}
+.dp-track{position:relative;height:100%;border-left:1px solid var(--line)}
+.dp-track .grid{position:absolute;top:0;bottom:0;border-left:1px dashed var(--line)}
+.dp-dot{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--muted)}
+.dp-range{position:absolute;top:50%;height:6px;margin-top:-3px;border-radius:3px;background:var(--muted);opacity:.45}
+.dp-row.me .dp-dot{background:var(--berry);width:18px;height:18px;margin:-9px 0 0 -9px;box-shadow:0 0 0 4px var(--berry-soft)}
+.dp-row.prem .dp-dot{background:var(--walnut)}
+.dp-axis{display:grid;grid-template-columns:170px 1fr 70px;font-size:.8rem;color:var(--muted)}
+.dp-axis .ticks{position:relative;height:18px}
+.dp-axis .ticks span{position:absolute;transform:translateX(-50%)}
+@media (max-width:600px){.dp-row,.dp-axis{grid-template-columns:110px 1fr 54px}}
+
+.chartbox{position:relative;height:340px;margin:12px 0}
+.chartbox.short{height:300px}
+.chartbox.tall{height:400px}
+
+/* question blocks */
+.q{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:start;margin-top:8px}
+.q .qn{font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:1.25rem;font-weight:700;color:var(--surface);background:var(--walnut);border-radius:10px;height:48px;display:flex;align-items:center;justify-content:center}
+.q h2{font-size:1.6rem}
+.answer{border:2px solid var(--forest);border-radius:14px;padding:16px 20px;margin:20px 0;background:var(--surface)}
+.answer > strong:first-child{color:var(--forest);font-size:1.05rem}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 40px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;border-radius:50%;background:var(--pear-soft);color:var(--walnut);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.boxes{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.boxes div{flex:1 1 70px;min-width:70px;border:2px solid var(--pear);border-radius:8px;padding:8px;text-align:center;font-size:.85rem;background:var(--pear-soft)}
+.boxes div.free{border-style:dashed;border-color:var(--berry);background:var(--berry-soft)}
+.boxes div.after{opacity:.75;border-color:var(--navy);background:var(--navy-soft)}
+.boxes b{display:block;font-size:1rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+.formula{font-family:"Palatino Linotype",Palatino,Georgia,serif;background:var(--bg);border-radius:8px;padding:8px 12px;display:inline-block;margin:4px 0}
+.chip{display:inline-block;padding:1px 9px;border-radius:999px;font-size:.82rem;font-weight:600}
+.chip.go{background:var(--forest-soft);color:var(--forest)}
+.chip.cond{background:var(--pear-soft);color:var(--walnut)}
+.chip.later{background:var(--navy-soft);color:var(--navy)}
+footer{color:var(--muted);font-size:.85rem;padding:30px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#tldr">The case in one minute</a></li>
+    <li><a href="#story">Founder and company</a></li>
+    <li><a href="#products">Products, sales, channels</a></li>
+    <li><a href="#market">Market and competitors</a></li>
+    <li><a href="#projects">The four projects</a></li>
+    <li><a href="#rules">Ground rules for the math</a></li>
+    <li><a href="#q1">Q1 Current pricing</a></li>
+    <li><a href="#q2">Q2 Father's Day box</a></li>
+    <li><a href="#q3">Q3 Pop-up shop</a></li>
+    <li><a href="#q4">Q4 Boutique</a></li>
+    <li><a href="#q5">Q5 Subscription</a></li>
+    <li><a href="#q6">Q6 What to do</a></li>
+    <li><a href="#cheat">Cold-call cheat sheet</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <div>
+    <h1>BEWÖÖD: pricing four growth bets on one wooden bowtie</h1>
+    <p class="lede">A study digest of the NACRA case by Dolansky, Ruaud and Didier (Case Research Journal, 2020). Summary, every exhibit, worked answers, and what to say in class.</p>
+    <div class="facts">
+      <span>Lille, France</span><span>Founded March 2015</span><span>Decision date: March 2018</span><span>Flagship: Mr. Divergent, €39</span><span>3 of 4 decisions due by June</span>
+    </div>
+  </div>
+  <svg viewBox="0 0 400 200" role="img" aria-label="Illustration of a faceted wooden bowtie">
+    <g id="bt"></g>
+  </svg>
+</header>
+
+<!-- TLDR -->
+<section id="tldr">
+  <h2>The case in one minute</h2>
+  <div class="prose">
+    <p>Laury Bonjean founded BEWÖÖD, a small Lille brand of handcrafted, laser-cut wooden fashion accessories. Three years in, it is a recognized name, and its best-seller is a wooden bowtie called <b>Mr. Divergent</b>, sold for <b>€39 including 20% VAT</b>. That price sits at the low end of a market where premium rivals charge €50 to €95.</p>
+    <p>In March 2018 she has four growth options, all built around Mr. Divergent. Each one needs a different pricing tool. Her real problem: she has always priced by trial and error and gut feel, and she wants a sound method before choosing which options to launch.</p>
+  </div>
+  <div class="decisions">
+    <div class="dcard" style="--c:var(--pear)"><h4>Father's Day box set</h4><div class="tool">Tool: price-sensitivity survey (Van Westendorp)</div><div class="price">€49</div><div class="verdict">Launch</div></div>
+    <div class="dcard" style="--c:var(--forest)"><h4>Pop-up shop (2 weeks)</h4><div class="tool">Tool: price elasticity, break-even on €399</div><div class="price">€45</div><div class="verdict">Launch, break-even at 13 units</div></div>
+    <div class="dcard" style="--c:var(--navy)"><h4>Old Lille boutique</h4><div class="tool">Tool: channel margin math, cannibalization</div><div class="price">€39</div><div class="verdict">Accept, with conditions</div></div>
+    <div class="dcard" style="--c:var(--berry)"><h4>Subscription box</h4><div class="tool">Tool: customer lifetime value (CLV)</div><div class="price">€20<span style="font-size:1rem">/qtr</span></div><div class="verdict">Pilot after June</div></div>
+  </div>
+  <div class="callout wood"><strong>The big insight</strong>Every data set in the case says the same thing: Bonjean is underpricing. Demand for Mr. Divergent is price-inelastic, customers will pay about €10 more for a box that costs her €4.10 more, and her "premium, handcrafted, local" story is priced like a budget brand.</div>
+</section>
+
+<!-- STORY -->
+<section id="story">
+  <h2>Founder and company</h2>
+  <ol class="timeline">
+    <li><span class="yr">Child</span><div>Grows up in Dunkirk (northern French coast). Her father teaches her woodworking; by age 8 she is building furniture for her Barbie dolls. Fills notebooks with drawings.</div></li>
+    <li><span class="yr">Uni</span><div>Studies biology at university in Lille, then joins a work-study program in computer graphics at ESDM, a fashion design school.</div></li>
+    <li><span class="yr">Spark</span><div>Fashion-designer friend Jean Laument (whose brand was launched through Maisons de Mode, a City of Lille program for young designers) tells her about laser cutting at the Fablab. She does an internship there, learns to laser-cut her drawings in wood, spends 18 months planning, builds prototypes, takes sewing classes.</div></li>
+    <li><span class="yr">2015</span><div>Launches BEWÖÖD in March 2015, aged 27. First creation, the Mr. Divergent wooden bowtie, becomes the best-seller. Early revenue comes from regional trade shows, local events and a pop-up store in Roubaix.</div></li>
+    <li><span class="yr">2016</span><div>Competition in wooden bowties intensifies, though the market stays fragmented.</div></li>
+    <li><span class="yr">2017</span><div>Online store opened (cheap: low inventory storage costs). About 20 partner stores in France and Belgium. Sales mix: 40% own shop and trade shows, 30% online, 30% other retailers.</div></li>
+    <li><span class="yr">Mar 2018</span><div>Bonjean weighs four projects. Box set, pop-up and boutique must be decided by June; subscription is a longer-term strategic call she still wants evaluated now.</div></li>
+  </ol>
+
+  <div class="two">
+    <div class="panel">
+      <h3 style="margin-top:0">How products are made</h3>
+      <ol class="steps">
+        <li>Hand-drawn sketch on paper</li>
+        <li>Vectorized on a computer</li>
+        <li>Parts laser-cut (at the Techshop in Lille)</li>
+        <li>Handcrafted: sanding, polishing, coloring, varnishing, sewing, assembly in her nearby workshop</li>
+        <li>Photo shoots and advertising ideas</li>
+      </ol>
+      <p style="font-size:.92rem;color:var(--muted)">Support staff are scaled up or down with demand. Products are delivered by bicycle.</p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Brand values and identity</h3>
+      <p><b>Name:</b> "be wood", meaning be nature, be wild.</p>
+      <p><b>Logo:</b> a geometric bear carrying a bird; signals nature and simplicity, deliberately neither masculine nor feminine.</p>
+      <p><b>Materials:</b> pear, mahogany, oak, walnut (chosen for color, graphics and mostly weight); only renewable woods; organic cotton fabrics. Wood supplier 15 km away, boards cut to size to limit waste.</p>
+      <p><b>Movement:</b> "slow design"; promotes craftspeople and sustainability; part of a reforestation program. 100% designed in Hauts-de-France.</p>
+    </div>
+  </div>
+
+  <h3>Customers and marketing</h3>
+  <div class="prose">
+    <p>Target customers are urban, "chic", community-minded people aged 18 to 40 who want to reconnect with nature through authentic, responsible products. Wood appeals as warm, refined, unique (every grain differs) and not plastic.</p>
+    <p>Marketing is mostly non-traditional and online: an information-rich website, heavy social media use (Bonjean credits it as essential and cheaper than advertising, but it needs constant fresh content), contests and sweepstakes to collect e-mail addresses, planned workshop visits and live-streamed production, and coverage in the local paper La Voix du Nord.</p>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <h2>Products, sales and channels</h2>
+  <p class="prose">Style: geometric shapes with floral inspiration; special orders possible. About 70 women's jewelry items (each available in silver, stainless steel or gold plate), fewer men's categories but more unique designs, and a few children's items.</p>
+
+  <h3>Exhibit 5: price list</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Collection</th><th>Item</th><th class="r">Models</th><th class="r">Price</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="6">Women</td><td>Earrings</td><td class="r">26</td><td class="r">€16, 19, 30 or 35</td></tr>
+      <tr><td>Chestplates</td><td class="r">5</td><td class="r">€45 or 60</td></tr>
+      <tr><td>Pendants</td><td class="r">8</td><td class="r">€39</td></tr>
+      <tr><td>Necklaces</td><td class="r">8</td><td class="r">€35</td></tr>
+      <tr><td>Bracelets</td><td class="r">7</td><td class="r">€25</td></tr>
+      <tr><td>Pins and brooches</td><td class="r">13</td><td class="r">€10 or 20</td></tr>
+      <tr class="hl"><td rowspan="3">Men</td><td>Bowties (incl. Mr. Divergent)</td><td class="r">25</td><td class="r">€39</td></tr>
+      <tr><td>Cufflinks</td><td class="r">23</td><td class="r">€29 to 33 (XL)</td></tr>
+      <tr><td>Bracelets</td><td class="r">12</td><td class="r">€25 to 39</td></tr>
+      <tr><td rowspan="2">Children</td><td>Bowtie, age 2 to 5</td><td class="r">–</td><td class="r">€25</td></tr>
+      <tr><td>Bowtie, age 5 to 12</td><td class="r">–</td><td class="r">€29</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Exhibit 6: share of sales volume</h3>
+  <p class="prose">Women's items are 78% of volume; men's are 22%. Bowties alone are 18.5%, tied for second place with pendant earrings. Note that all four new projects lean on this one men's product.</p>
+  <div class="chartbox tall"><canvas id="cCat" aria-label="Bar chart of sales volume share by category"></canvas></div>
+  <div class="legend"><span><i style="background:var(--pear)"></i>Women's</span><span><i style="background:var(--navy)"></i>Men's</span></div>
+
+  <h3>Channel mix in 2017</h3>
+  <div class="strip" role="img" aria-label="40% own shop and trade shows, 30% online, 30% retail partners">
+    <div style="width:40%;background:var(--walnut)">Own shop and trade shows 40%</div>
+    <div style="width:30%;background:var(--forest)">Online 30%</div>
+    <div style="width:30%;background:var(--navy)">Retail partners 30%</div>
+  </div>
+</section>
+
+<!-- MARKET -->
+<section id="market">
+  <h2>Market and competitors</h2>
+  <div class="prose">
+    <p><b>Men's accessories are growing</b>, led by young, urban, trendy men. Revenue in some categories (watches, bags, shoes) grew by up to 57% between 2009 and 2014. A century ago, adornment signalled power for men; in the 20th century fashion became mostly a women's domain and men stuck to conservative accessories. By 2018 many young men want to reclaim accessories as playful and charming.</p>
+    <p><b>The bowtie's story:</b> born in the 18th century with military roots; serious and elegant for most of the 20th century; then turned into the prop of clowns and nerds (Stan Laurel, Pee-wee Herman, Steve Urkel) and overtaken by the necktie. In the mid-2000s designers such as Alber Elbaz and Alexis Mabille made it fashionable again, as a colorful, personal statement piece. Fabric still dominates, but wood, leather and metal are emerging. Bonjean's idea: a wooden bowtie sits between tradition and modernity.</p>
+    <p><b>Competition</b> was thin at launch but intensified from 2016 while staying fragmented. Bonjean doesn't need to be the volume leader; she wants to be the innovator. All premium players compete on the same local, handcrafted, slow-design story, yet she deliberately priced at the low end because a high price "felt wrong" to her.</p>
+  </div>
+
+  <h3>Exhibit 7: where €39 sits</h3>
+  <div class="panel">
+    <div id="dotplot" class="dotplot" role="img" aria-label="Competitor average prices from €30 to €95 with BEWÖÖD at €39"></div>
+    <div class="legend" style="margin-top:8px"><span><i style="background:var(--berry)"></i>BEWÖÖD</span><span><i style="background:var(--walnut)"></i>Premium players (the ones she resembles)</span><span><i style="background:var(--muted)"></i>Others</span><span><i style="background:var(--muted);opacity:.45;height:6px"></i>Price range</span></div>
+  </div>
+  <p class="prose" style="font-size:.95rem;color:var(--muted)">Notes from the exhibit: Melissandre (1992) pioneered the wooden bowtie. Uncle Pope (2013) is designed in Paris with Perigord cabinetmakers. Focalimum (2015) is made in the south of France. Guillaume (2017, Orléans) uses only Sologne woods. Wood Touch makes a moustache-shaped cherry-wood tie handcrafted in Drôme. The others give prices only.</p>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <h2>The four projects</h2>
+  <div class="two">
+    <div class="panel" style="border-top:6px solid var(--pear)">
+      <h3 style="margin-top:0">1. Father's Day box set <span class="chip cond">due June</span></h3>
+      <p>Gift box with Mr. Divergent plus two extra interchangeable fabric knots, so the buyer gets three looks. Could be repeated yearly and for other holidays. Packaging is a key part of the offer. Data: unit costs (Ex. 9 and 10) and a survey of 200 representative customers asking at what price the box is too expensive, and at what price it is so cheap they'd doubt the quality (Ex. 11).</p>
+    </div>
+    <div class="panel" style="border-top:6px solid var(--forest)">
+      <h3 style="margin-top:0">2. Pop-up shop <span class="chip cond">due June</span></h3>
+      <p>Two-week pop-up in downtown Lille in early June (Father's Day), focused on quality and elegance, with about 20 preselected young designers. Fee €399 buys a corner by a big window on a busy pedestrian crossing, plus merchandising, inventory management, sales staff and reporting. She'd feature Mr. Divergent only and thinks she could charge a little more. Data: past price test at €35, €39, €45 over equal periods (Ex. 12).</p>
+    </div>
+    <div class="panel" style="border-top:6px solid var(--navy)">
+      <h3 style="margin-top:0">3. Old Lille boutique <span class="chip cond">due June</span></h3>
+      <p>A trendy boutique in a fashionable area, targeting men wanting a chic, sporty or romantic look. The owner loves the product and offers to take only a 25% retail margin (half his usual) while keeping the €39 consumer price. He wants a commitment by June.</p>
+    </div>
+    <div class="panel" style="border-top:6px solid var(--berry)">
+      <h3 style="margin-top:0">4. Subscription box <span class="chip later">strategic</span></h3>
+      <p>"BEWÖÖD Box for Men": every quarter, a personalized box of three removable knots for the subscriber's Mr. Divergent. Run in-house (not a third party) to own customer data. Price €20 per quarter, only for existing Mr. Divergent owners, first box free with a one-year commitment. Market: 300+ box offers in France, about 500,000 subscribers, average subscription 18 months. Data: per-box costs (Ex. 13).</p>
+    </div>
+  </div>
+  <div class="callout navy"><strong>Constraints Bonjean states</strong>She can do any or all four and wants each judged on its own merits. Costs like personnel, rent and FabLab are flexible, so allocated fixed costs won't change whichever she picks, and current capacity can absorb the volume. The binding limit is her own time and energy. Her goals: more market presence plus sustainable, profitable growth, without hurting margins.</div>
+</section>
+
+<!-- RULES -->
+<section id="rules">
+  <h2>Ground rules for the math</h2>
+  <div class="two">
+    <div class="callout wood" style="margin:0"><strong>Rule 1: strip out VAT</strong>All consumer prices include 20% VAT, which goes to the state. Divide by 1.2.<br><span class="formula">€39 / 1.2 = €32.50 net to BEWÖÖD</span></div>
+    <div class="callout" style="margin:0"><strong>Rule 2: use incremental costs</strong>Raw materials (€6.60 per tie) are truly variable. The other €16.30 (marketing, overhead, personnel) is allocated, and the case says it won't change. So decisions should use contribution. Full-cost figures are shown too, as a conservative check.</div>
+  </div>
+  <h3>Mr. Divergent today (Exhibit 9)</h3>
+  <div class="strip" role="img" aria-label="Breakdown of €39 price">
+    <div style="width:16.67%;background:var(--muted)">VAT 6.50</div>
+    <div style="width:16.92%;background:var(--pear)">Materials 6.60</div>
+    <div style="width:41.79%;background:var(--navy)">Allocated costs 16.30</div>
+    <div style="width:24.62%;background:var(--forest)">Profit 9.60</div>
+  </div>
+  <div class="tablewrap"><table>
+    <tbody>
+      <tr><td>Consumer price (incl. VAT)</td><td class="r">€39.00</td></tr>
+      <tr><td>Net price (ex VAT)</td><td class="r">€32.50</td></tr>
+      <tr><td>Materials: wood 2.50, engraving and design 1.90, knot 1.30, fastener 0.90</td><td class="r">€6.60</td></tr>
+      <tr class="good"><td><b>Contribution per tie</b> (80% of net price)</td><td class="r"><b>€25.90</b></td></tr>
+      <tr><td>Allocated: marketing 2.50, overhead 0.90, personnel 12.90</td><td class="r">€16.30</td></tr>
+      <tr class="hl"><td>Full-cost profit per tie (30% of net price)</td><td class="r">€9.60</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- Q1 -->
+<section id="q1">
+  <div class="q"><div class="qn">Q1</div><div>
+  <h2>How has Bonjean priced so far, and is it right?</h2>
+  </div></div>
+  <div class="prose">
+    <p><b>What she did:</b> trial and error, anchored on competitors. She chose the low end of the market (€39) to stay accessible, even though her positioning (handcrafted, local, eco, slow design) matches the premium players at €50 to €95. She didn't start from costs or from measured customer value.</p>
+    <p><b>Why it's a problem:</b></p>
+    <ul>
+      <li>Price and positioning send mixed signals. Premium story, budget price. The box-set survey shows people start doubting quality when prices look too low.</li>
+      <li>Her own test (Ex. 12) shows demand is inelastic, so raising price raises revenue and profit.</li>
+      <li>The full-cost margin is a thin €9.60 per tie, leaving little cushion for retailer margins or growth spending.</li>
+    </ul>
+  </div>
+  <div class="answer"><strong>Answer</strong><p>She uses competition-based, gut-feel pricing at the low end. She should move to value-based pricing: use costs as the floor, competitor prices as reference points, and customer willingness to pay to set the actual price. The tools for this are already in her exhibits: the survey (box set), the price test (pop-up), channel math (boutique) and CLV (subscription).</p></div>
+</section>
+
+<!-- Q2 -->
+<section id="q2">
+  <div class="q"><div class="qn">Q2</div><div>
+  <h2>What should the Father's Day box set cost?</h2>
+  </div></div>
+  <p class="prose"><b>Method:</b> Van Westendorp price-sensitivity analysis (a two-question version). Turn Exhibit 11 into cumulative curves. "Too expensive" accumulates upward (if your limit is €44, then €47 is also too expensive). "Too cheap" accumulates downward (if you'd doubt quality at €50, you'd also doubt it at €47).</p>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th>Price</th><th class="r">"Too expensive" answers</th><th class="r">Cumulative too expensive</th><th class="r">"Too cheap" answers</th><th class="r">Cumulative too cheap</th><th class="r">Neither (acceptable)</th></tr></thead>
+    <tbody id="vwTable"></tbody>
+  </table></div>
+
+  <div class="chartbox"><canvas id="cVW" aria-label="Van Westendorp chart"></canvas></div>
+
+  <div class="two">
+    <div class="panel">
+      <h3 style="margin-top:0">Reading the chart</h3>
+      <p>The curves cross at about <b>€48.90</b>: the optimal price point, where as many people think it's too cheap as too expensive (about 41% each).</p>
+      <p>The share finding the price acceptable peaks at <b>€50</b> (40 of 200 people).</p>
+      <p>So the sweet spot is €48 to €50. <b>€49</b> fits, and it echoes the "9" ending of €39.</p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Economics at €49 (Ex. 10)</h3>
+      <table>
+        <tr><td>Net price (49 / 1.2)</td><td class="r">€40.83</td></tr>
+        <tr><td>Materials incl. 3 knots and box</td><td class="r">€10.70</td></tr>
+        <tr class="good"><td><b>Contribution</b> (74%)</td><td class="r"><b>€30.13</b></td></tr>
+        <tr><td>Allocated costs</td><td class="r">€16.30</td></tr>
+        <tr class="hl"><td>Full-cost profit</td><td class="r">€13.83</td></tr>
+      </table>
+      <p style="font-size:.92rem">Versus a single Mr. Divergent: +€4.23 contribution per sale. The customer pays €10 more for two knots and a box that cost her €4.10.</p>
+    </div>
+  </div>
+  <div class="answer"><strong>Answer</strong><p>Price the box at <b>€49</b>. It's the survey's optimal point, earns €30.13 contribution per box (the highest of any unit option), and turns a €39 purchase into a €49 gift. Caveats to mention in class: 200 hypothetical answers from people she thinks are representative, only two of the four Van Westendorp questions, and no volume forecast, so start with a limited run.</p></div>
+</section>
+
+<!-- Q3 -->
+<section id="q3">
+  <div class="q"><div class="qn">Q3</div><div>
+  <h2>Should she join the pop-up, and at what price?</h2>
+  </div></div>
+  <p class="prose"><b>Method:</b> price elasticity from Exhibit 12, then revenue, contribution and break-even on the €399 fee.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Price (incl. VAT)</th><th class="r">Units</th><th class="r">Net price</th><th class="r">Net revenue</th><th class="r">Contribution (−€6.60/unit)</th><th class="r">Full-cost profit (−€22.90/unit)</th></tr></thead>
+    <tbody>
+      <tr><td>€35 (discount)</td><td class="r">73</td><td class="r">€29.17</td><td class="r">€2,129</td><td class="r">€1,647</td><td class="r">€457</td></tr>
+      <tr><td>€39 (reference)</td><td class="r">68</td><td class="r">€32.50</td><td class="r">€2,210</td><td class="r">€1,761</td><td class="r">€653</td></tr>
+      <tr class="good"><td><b>€45 (increase)</b></td><td class="r">62</td><td class="r">€37.50</td><td class="r"><b>€2,325</b></td><td class="r"><b>€1,916</b></td><td class="r"><b>€905</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="chartbox short"><canvas id="cPop" aria-label="Contribution and units by price"></canvas></div>
+
+  <div class="two">
+    <div class="panel">
+      <h3 style="margin-top:0">Elasticity (midpoint method)</h3>
+      <p>€39 → €45: units −9.2%, price +14.3%<br><span class="formula">E = −9.2 / 14.3 ≈ −0.65</span></p>
+      <p>€39 → €35: units +7.1%, price −10.8%<br><span class="formula">E = 7.1 / −10.8 ≈ −0.66</span></p>
+      <p>|E| &lt; 1 means <b>inelastic</b>: raising price lifts revenue. A discount gains only 5 units and loses money.</p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Break-even on the €399 fee</h3>
+      <table>
+        <tr><th>Price</th><th class="r">Contribution basis</th><th class="r">Full-cost basis</th></tr>
+        <tr class="good"><td>€45</td><td class="r">399 / 30.90 = <b>13 ties</b></td><td class="r">399 / 14.60 = 28</td></tr>
+        <tr><td>€39</td><td class="r">399 / 25.90 = 16 ties</td><td class="r">399 / 9.60 = 42</td></tr>
+      </table>
+      <p style="font-size:.92rem">The pop-up provides its own sales staff, so her personnel cost per unit there is arguably lower than €12.90. That makes the full-cost view pessimistic.</p>
+    </div>
+  </div>
+  <div class="callout warn"><strong>Watch the channel conflict</strong>The pop-up and the boutique are both in Lille. A €45 tie downtown and a €39 tie in Old Lille (and online) can annoy customers. Fix: lead the pop-up with the €49 box set, and if selling the single tie at €45, make it a pop-up exclusive (special knot or limited edition) so the prices aren't directly comparable.</div>
+  <div class="answer"><strong>Answer</strong><p><b>Join the pop-up.</b> Price Mr. Divergent at <b>€45</b>: demand is inelastic, €45 gives the highest revenue and profit in her own test, and break-even is only 13 ties over two weeks of Father's Day traffic. Also sell the €49 box set there; next to a €45 single tie, the box looks like a bargain (anchoring). The window spot and customer contact are bonus brand value.</p></div>
+</section>
+
+<!-- Q4 -->
+<section id="q4">
+  <div class="q"><div class="qn">Q4</div><div>
+  <h2>Should she accept the boutique deal?</h2>
+  </div></div>
+  <p class="prose"><b>Method:</b> work backwards from the shelf price. A retail margin is a percentage of the retailer's selling price.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th class="r">Sold direct</th><th class="r">Boutique, 25% margin</th><th class="r">Boutique, his usual 50%</th></tr></thead>
+    <tbody>
+      <tr><td>Shelf price (incl. VAT)</td><td class="r">€39.00</td><td class="r">€39.00</td><td class="r">€39.00</td></tr>
+      <tr><td>Net of VAT</td><td class="r">€32.50</td><td class="r">€32.50</td><td class="r">€32.50</td></tr>
+      <tr><td>Retailer's margin</td><td class="r">–</td><td class="r">€8.13</td><td class="r">€16.25</td></tr>
+      <tr><td>BEWÖÖD receives (wholesale)</td><td class="r">€32.50</td><td class="r">€24.38</td><td class="r">€16.25</td></tr>
+      <tr class="good"><td><b>Contribution</b> (−€6.60)</td><td class="r">€25.90</td><td class="r"><b>€17.78</b></td><td class="r">€9.65</td></tr>
+      <tr class="hl"><td>Full-cost profit (−€22.90)</td><td class="r">€9.60</td><td class="r">€1.48</td><td class="r">−€6.65</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Where the €39 goes</h3>
+  <p style="margin-bottom:0;font-size:.9rem;color:var(--muted)">Sold direct</p>
+  <div class="strip">
+    <div style="width:16.67%;background:var(--muted)">VAT</div>
+    <div style="width:16.92%;background:var(--pear)">Materials</div>
+    <div style="width:41.79%;background:var(--navy)">Allocated 16.30</div>
+    <div style="width:24.62%;background:var(--forest)">Profit 9.60</div>
+  </div>
+  <p style="margin-bottom:0;font-size:.9rem;color:var(--muted)">Through the boutique</p>
+  <div class="strip">
+    <div style="width:16.67%;background:var(--muted)">VAT</div>
+    <div style="width:20.83%;background:var(--berry)">Retailer 8.13</div>
+    <div style="width:16.92%;background:var(--pear)">Materials</div>
+    <div style="width:41.79%;background:var(--navy)">Allocated 16.30</div>
+    <div style="width:3.79%;background:var(--forest)" title="Profit €1.48"></div>
+  </div>
+
+  <div class="callout navy"><strong>The cannibalization test</strong>Each boutique sale that is genuinely new adds €17.78. Each one that steals a sale she'd have made directly loses €8.13 (€25.90 − €17.78). The deal stays profitable as long as fewer than about <b>69%</b> of boutique buyers would have bought from her anyway.<br><span class="formula">17.78 × (1 − c) = 8.13 × c  →  c ≈ 0.69</span></div>
+  <p class="prose" style="font-size:.95rem">If the class reads 25% as a markup on wholesale rather than a margin, she'd get €32.50 / 1.25 = €26.00 and €19.40 contribution. State your assumption.</p>
+  <div class="answer"><strong>Answer</strong><p><b>Accept, with conditions.</b> It adds €17.78 contribution per new sale, keeps price parity at €39, and puts the brand in a prestigious shop that reaches new male customers, which fits her goal of market presence. But on a full-cost view it barely breaks even (€1.48), and at his normal 50% it would lose money. So: put the 25% margin in writing for a fixed period (say 12 months), agree minimum order sizes, and track whether buyers are new or existing customers.</p></div>
+</section>
+
+<!-- Q5 -->
+<section id="q5">
+  <div class="q"><div class="qn">Q5</div><div>
+  <h2>Is the subscription box worth it? (CLV)</h2>
+  </div></div>
+  <p class="prose"><b>Method:</b> customer lifetime value. Average subscription: 18 months = 6 quarterly boxes. First box free, so 5 paid. Price €20 incl. VAT = €16.67 net. Cost per box (Ex. 13): knots 3 × 1.30 + packaging 1.00 = €4.90, plus shipping and newsletter 1.50, overhead 0.30, personnel 1.40 = €3.20. Total €8.10. These per-box costs are mostly real cash costs (shipping especially), so we use the full €8.10.</p>
+  <div class="boxes" aria-label="Six quarterly boxes, first free">
+    <div class="free"><b>Box 1</b>Free<br>−€8.10</div>
+    <div><b>Box 2</b>+€8.57</div>
+    <div><b>Box 3</b>+€8.57</div>
+    <div><b>Box 4</b>+€8.57<br><small>1-yr commitment ends</small></div>
+    <div class="after"><b>Box 5</b>+€8.57</div>
+    <div class="after"><b>Box 6</b>+€8.57</div>
+  </div>
+  <div class="chartbox short"><canvas id="cSub" aria-label="Cumulative profit per subscriber"></canvas></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Scenario</th><th class="r">Revenue (net)</th><th class="r">Cost</th><th class="r">CLV per subscriber</th></tr></thead>
+    <tbody>
+      <tr class="good"><td><b>Average customer: 6 boxes, 5 paid</b></td><td class="r">5 × 16.67 = €83.33</td><td class="r">6 × 8.10 = €48.60</td><td class="r"><b>€34.73</b></td></tr>
+      <tr><td>Worst case: stays only the 1-year commitment (4 boxes, 3 paid)</td><td class="r">€50.00</td><td class="r">€32.40</td><td class="r">€17.60</td></tr>
+      <tr><td>If you ignore VAT (common shortcut)</td><td class="r">5 × 20 = €100</td><td class="r">€48.60</td><td class="r">€51.40</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="panel">
+      <h3 style="margin-top:0">What the number means</h3>
+      <p>€34.73 is the most she could spend to acquire one subscriber and still break even. Targeting existing Mr. Divergent owners through her e-mail list and social channels should keep acquisition cheap.</p>
+      <p>The free box pays back by box 2. Each subscriber brings €83 of revenue over 18 months, 2.6× a single tie sale.</p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Strategic value beyond CLV</h3>
+      <p>Recurring revenue, loyalty, owned customer data, a community, and a test bed for new fabrics. Risks: a new business model, fulfilment work every quarter, unknown acquisition cost, and churn once the commitment ends. No discount rate is given; discounting would trim the CLV slightly.</p>
+    </div>
+  </div>
+  <div class="answer"><strong>Answer</strong><p><b>Yes, launch it as a pilot after the June projects.</b> CLV is positive in every scenario (€17.60 minimum, €34.73 on average), and the strategic upside is large. €20 a quarter looks safe; three knots at about €6.67 each is consistent with how the box set values extra knots. She could test €22 to €25 later.</p></div>
+</section>
+
+<!-- Q6 -->
+<section id="q6">
+  <div class="q"><div class="qn">Q6</div><div>
+  <h2>Which options should she implement?</h2>
+  </div></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Option</th><th class="r">Price</th><th class="r">Contribution</th><th class="r">Full-cost profit</th><th>Strategic fit</th><th>Call</th></tr></thead>
+    <tbody>
+      <tr><td>Father's Day box set</td><td class="r">€49</td><td class="r">€30.13 / box</td><td class="r">€13.83</td><td>Raises average order, repeatable for holidays</td><td><span class="chip go">Go</span></td></tr>
+      <tr><td>Pop-up shop</td><td class="r">€45</td><td class="r">€30.90 / tie</td><td class="r">€14.60</td><td>Visibility, low risk, synergy with box</td><td><span class="chip go">Go</span></td></tr>
+      <tr><td>Boutique</td><td class="r">€39</td><td class="r">€17.78 / tie</td><td class="r">€1.48</td><td>New customers and prestige, thin margin</td><td><span class="chip cond">Go, with terms</span></td></tr>
+      <tr><td>Subscription</td><td class="r">€20 / qtr</td><td class="r" colspan="2">CLV €34.73 per subscriber</td><td>Loyalty, data, recurring revenue</td><td><span class="chip later">Pilot later</span></td></tr>
+    </tbody>
+  </table></div>
+  <ol class="steps">
+    <li><b>By June:</b> launch the €49 box set and join the pop-up, leading with the box set and offering a pop-up exclusive single tie at €45. Together they target the same Father's Day demand.</li>
+    <li><b>By June:</b> sign the boutique at €39 with a 25% margin locked in writing, and measure cannibalization.</li>
+    <li><b>Second half of 2018:</b> pilot the subscription with existing Mr. Divergent owners and track acquisition cost against the €34.73 ceiling.</li>
+    <li><b>Ongoing:</b> test raising the core Mr. Divergent price toward €42 to €45. The evidence (inelastic demand, survey, premium rivals) says she has room, and it's how she "harvests the value she has built".</li>
+  </ol>
+  <div class="callout warn"><strong>Risks to name</strong>Her own time (three launches in three months), dependence on one product that is only 18.5% of volume, price inconsistency across Lille channels, small and hypothetical data sets, and the tension between her "accessible" instinct and premium positioning.</div>
+  <div class="answer"><strong>Answer</strong><p>Do all four, in sequence. Every option adds contribution because fixed costs don't change and capacity is available. The box set and pop-up are the clearest wins, the boutique is a strategic yes with safeguards, and the subscription is the long-term play. The overarching lesson is to switch from gut-feel, low-end pricing to value-based pricing.</p></div>
+</section>
+
+<!-- CHEAT -->
+<section id="cheat">
+  <h2>Cold-call cheat sheet</h2>
+  <div class="two">
+    <div class="panel">
+      <h3 style="margin-top:0">Numbers to remember</h3>
+      <table>
+        <tr><td>Mr. Divergent net price</td><td class="r">€32.50</td></tr>
+        <tr><td>Variable cost per tie</td><td class="r">€6.60</td></tr>
+        <tr><td>Contribution per tie</td><td class="r">€25.90</td></tr>
+        <tr><td>Full cost per tie</td><td class="r">€22.90</td></tr>
+        <tr><td>Box set optimal price</td><td class="r">≈ €49</td></tr>
+        <tr><td>Price elasticity</td><td class="r">≈ −0.65</td></tr>
+        <tr><td>Pop-up break-even at €45</td><td class="r">13 ties</td></tr>
+        <tr><td>Boutique wholesale price</td><td class="r">€24.38</td></tr>
+        <tr><td>Cannibalization threshold</td><td class="r">≈ 69%</td></tr>
+        <tr><td>Subscription CLV</td><td class="r">€34.73</td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Formulas</h3>
+      <p><span class="formula">Net price = consumer price / 1.2</span></p>
+      <p><span class="formula">Contribution = net price − variable cost</span></p>
+      <p><span class="formula">Break-even units = fixed cost / unit contribution</span></p>
+      <p><span class="formula">Elasticity = %ΔQ / %ΔP (midpoint)</span></p>
+      <p><span class="formula">Wholesale = net retail × (1 − retail margin)</span></p>
+      <p><span class="formula">CLV = Σ paid-box margin − cost of free box</span></p>
+      <h3>Common traps</h3>
+      <ul style="padding-left:18px;margin:0">
+        <li>Forgetting to remove VAT</li>
+        <li>Using allocated fixed costs for an incremental decision</li>
+        <li>Treating retail margin as a markup on cost</li>
+        <li>Forgetting the free first box still costs €8.10</li>
+        <li>18 months is 6 quarters, not 18 boxes</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Which exhibit answers what</h3>
+  <div class="tablewrap"><table>
+    <tbody>
+      <tr><td>Ex. 1 to 4</td><td>Photos: Mr. Divergent and wood, shape and fabric options; production process; bear-and-bird logo; women's, men's and children's ranges</td></tr>
+      <tr><td>Ex. 5 and 6</td><td>Price list and sales volume by category (context, Q1)</td></tr>
+      <tr><td>Ex. 7</td><td>Competitor prices (Q1, positioning)</td></tr>
+      <tr><td>Ex. 8 to 11</td><td>Box set rendering, costs, survey (Q2)</td></tr>
+      <tr><td>Ex. 12</td><td>Price test (Q3, and evidence for Q1 and Q6)</td></tr>
+      <tr><td>Ex. 13</td><td>Subscription box costs (Q5)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer>Study digest for personal course use. Figures are calculated from the case exhibits; rounding may differ by a few cents.</footer>
+</main>
+</div>
+
+<script>
+// ---------- Hero bowtie (faceted, original illustration) ----------
+(function(){
+  const g=document.getElementById('bt');
+  const ns='http://www.w3.org/2000/svg';
+  const tones=['--w1','--w2','--w3','--w4','--w5','--w2','--w3'];
+  const left=[[188,62],[130,30],[60,28],[22,70],[30,130],[66,172],[132,170],[188,138]];
+  const hub=[150,100];
+  function tri(pts,fill,i){
+    const p=document.createElementNS(ns,'polygon');
+    p.setAttribute('points',pts.map(q=>q.join(',')).join(' '));
+    p.setAttribute('fill','var('+fill+')');
+    p.setAttribute('stroke','var(--bg)');p.setAttribute('stroke-width','1.5');
+    p.setAttribute('class','facet');p.style.animationDelay=(i*45)+'ms';
+    g.appendChild(p);
+  }
+  let k=0;
+  for(let i=0;i<left.length-1;i++){
+    tri([hub,left[i],left[i+1]],tones[i%tones.length],k++);
+    const m=q=>[400-q[0],q[1]];
+    tri([m(hub),m(left[i]),m(left[i+1])],tones[(i+3)%tones.length],k++);
+  }
+  tri([hub,left[left.length-1],[188,62]],'--w4',k++);
+  tri([[250,100],[212,138],[212,62]],'--w4',k++);
+  const r=document.createElementNS(ns,'rect');
+  r.setAttribute('x',182);r.setAttribute('y',56);r.setAttribute('width',36);r.setAttribute('height',88);r.setAttribute('rx',6);
+  r.setAttribute('fill','var(--navy)');r.setAttribute('class','facet');r.style.animationDelay=(k*45)+'ms';g.appendChild(r);
+  for(let y=66;y<140;y+=14)for(let x=190;x<216;x+=12){
+    const c=document.createElementNS(ns,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',2.4);
+    c.setAttribute('fill','var(--pear-soft)');c.setAttribute('class','facet');c.style.animationDelay=(k*45+80)+'ms';g.appendChild(c);
+  }
+})();
+
+// ---------- Competitor dot plot ----------
+(function(){
+  const comps=[
+    ['Focalimum',95,95,'prem'],['Melissandre',70,70,'prem'],['Guillaume',36,95,'prem'],['Uncle Pope (from)',50,50,'prem'],
+    ['Nice Alouette',49,49,''],['Dagobear',39,39,''],['BEWÖÖD',39,39,'me'],['Ferdinand',36,36,''],
+    ['Wooden Pap knot',30,40,''],['The Small Chips',30,30,''],['Wooden words',30,30,''],['Wood touch',30,30,'']
+  ];
+  const lo=25,hi=100,pos=v=>((v-lo)/(hi-lo)*100)+'%';
+  const el=document.getElementById('dotplot');
+  const ticks=[30,40,50,60,70,80,90,100];
+  comps.forEach(([n,a,b,cls])=>{
+    const row=document.createElement('div');row.className='dp-row '+cls;
+    let grid=ticks.map(t=>`<span class="grid" style="left:${pos(t)}"></span>`).join('');
+    let range=a!==b?`<span class="dp-range" style="left:${pos(a)};width:calc(${pos(b)} - ${pos(a)})"></span>`:'';
+    let dot=a!==b?`<span class="dp-dot" style="left:${pos((a+b)/2)}"></span>`:`<span class="dp-dot" style="left:${pos(a)}"></span>`;
+    row.innerHTML=`<span>${n}</span><span class="dp-track">${grid}${range}${dot}</span><span class="num" style="text-align:right">€${a===b?a:a+'–'+b}</span>`;
+    el.appendChild(row);
+  });
+  const ax=document.createElement('div');ax.className='dp-axis';
+  ax.innerHTML='<span></span><span class="ticks">'+ticks.map(t=>`<span style="left:${pos(t)}">€${t}</span>`).join('')+'</span><span></span>';
+  el.appendChild(ax);
+})();
+
+// ---------- Van Westendorp table ----------
+const prices=[35,38,41,44,47,50,53,56,59,62,65];
+const te=[0,1,7,26,28,32,37,26,23,13,7];
+const tc=[5,14,31,40,44,25,17,14,8,2,0];
+const teC=[],tcC=[],acc=[];
+te.reduce((s,v,i)=>(teC[i]=s+v),0);
+for(let i=prices.length-1,s=0;i>=0;i--){s+=tc[i];tcC[i]=s;}
+prices.forEach((p,i)=>acc[i]=200-teC[i]-tcC[i]);
+document.getElementById('vwTable').innerHTML=prices.map((p,i)=>
+  `<tr${p===50||p===47?' class="hl"':''}><td>€${p}</td><td class="r">${te[i]}</td><td class="r">${teC[i]} (${(teC[i]/2).toFixed(1)}%)</td><td class="r">${tc[i]}</td><td class="r">${tcC[i]} (${(tcC[i]/2).toFixed(1)}%)</td><td class="r">${acc[i]} (${(acc[i]/2).toFixed(1)}%)</td></tr>`).join('');
+
+// ---------- Charts ----------
+let charts=[];
+function v(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function build(){
+  if(typeof Chart==='undefined'){
+    document.querySelectorAll('.chartbox').forEach(b=>b.innerHTML='<p style="color:var(--muted)">Charts need an internet connection to load. All numbers are in the tables.</p>');
+    return;
+  }
+  charts.forEach(c=>c.destroy());charts=[];
+  Chart.defaults.color=v('--muted');Chart.defaults.borderColor=v('--line');
+  Chart.defaults.font.family=getComputedStyle(document.body).fontFamily;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  Chart.defaults.animation=reduce?false:{duration:600};
+
+  // categories
+  const cats=[['Stud earrings',22.25,'w'],['Pendant earrings',18.5,'w'],['Bowties',18.5,'m'],['Bracelets',11,'w'],['Pendants',7.25,'w'],['Pins',7,'w'],['Brooches',7,'w'],['Cufflinks',3,'m'],['Necklaces',2.75,'w'],['Chestplates',1.5,'w'],['Rings',0.75,'w'],['Suit pouch',0.5,'m']];
+  charts.push(new Chart(document.getElementById('cCat'),{type:'bar',
+    data:{labels:cats.map(c=>c[0]),datasets:[{data:cats.map(c=>c[1]),backgroundColor:cats.map(c=>c[2]==='m'?v('--navy'):v('--pear')),borderRadius:4}]},
+    options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'% of units'}}},
+      scales:{x:{ticks:{callback:x=>x+'%'},grid:{color:v('--line')}},y:{grid:{display:false}}}}}));
+
+  // Van Westendorp
+  const opp={id:'opp',afterDatasetsDraw(ch){
+    const x=ch.scales.x.getPixelForValue(48.9),{top,bottom}=ch.chartArea,ctx=ch.ctx;
+    ctx.save();ctx.strokeStyle=v('--walnut');ctx.setLineDash([5,4]);ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,bottom);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=v('--walnut');ctx.font='600 13px '+Chart.defaults.font.family;ctx.textAlign='left';
+    ctx.fillText('Optimal ≈ €48.90',x+6,top+14);ctx.restore();}};
+  charts.push(new Chart(document.getElementById('cVW'),{type:'line',
+    data:{datasets:[
+      {label:'Too expensive (cumulative %)',data:prices.map((p,i)=>({x:p,y:teC[i]/2})),borderColor:v('--berry'),backgroundColor:v('--berry'),tension:.25,borderWidth:3,pointRadius:3},
+      {label:'Too cheap / quality doubt (cumulative %)',data:prices.map((p,i)=>({x:p,y:tcC[i]/2})),borderColor:v('--navy'),backgroundColor:v('--navy'),tension:.25,borderWidth:3,pointRadius:3},
+      {type:'bar',label:'Acceptable (neither) %',data:prices.map((p,i)=>({x:p,y:acc[i]/2})),backgroundColor:v('--forest'),barThickness:18,borderRadius:3}
+    ]},
+    options:{maintainAspectRatio:false,interaction:{mode:'nearest',intersect:false},
+      scales:{x:{type:'linear',min:34,max:66,ticks:{stepSize:3,callback:x=>'€'+x},grid:{color:v('--line')}},
+              y:{min:0,max:100,ticks:{callback:y=>y+'%'},grid:{color:v('--line')}}},
+      plugins:{legend:{position:'bottom'}}},plugins:[opp]}));
+
+  // Pop-up
+  charts.push(new Chart(document.getElementById('cPop'),{type:'bar',
+    data:{labels:['€35','€39','€45'],datasets:[
+      {label:'Contribution (€)',data:[1647,1761,1916],backgroundColor:v('--forest'),borderRadius:4,yAxisID:'y'},
+      {label:'Full-cost profit (€)',data:[457,653,905],backgroundColor:v('--pear'),borderRadius:4,yAxisID:'y'},
+      {type:'line',label:'Units sold',data:[73,68,62],borderColor:v('--berry'),backgroundColor:v('--berry'),borderWidth:3,pointRadius:5,yAxisID:'y2'}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},
+      scales:{y:{beginAtZero:true,ticks:{callback:y=>'€'+y},grid:{color:v('--line')}},
+              y2:{position:'right',min:50,max:80,grid:{display:false},title:{display:true,text:'Units'}},x:{grid:{display:false}}}}}));
+
+  // Subscription
+  const cum=[-8.10,0.47,9.03,17.60,26.17,34.73];
+  charts.push(new Chart(document.getElementById('cSub'),{type:'bar',
+    data:{labels:['Box 1','Box 2','Box 3','Box 4','Box 5','Box 6'],datasets:[
+      {type:'line',label:'Cumulative profit per subscriber (€)',data:cum,borderColor:v('--forest'),backgroundColor:v('--forest'),borderWidth:3,pointRadius:5,tension:.2},
+      {label:'Profit on this box (€)',data:[-8.10,8.57,8.57,8.57,8.57,8.57],backgroundColor:[v('--berry'),v('--pear'),v('--pear'),v('--pear'),v('--navy'),v('--navy')],borderRadius:4}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': €'+c.raw.toFixed(2)}}},
+      scales:{y:{ticks:{callback:y=>'€'+y},grid:{color:v('--line')}},x:{grid:{display:false}}}}}));
+}
+build();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',build);
+</script>
+</body>
+</html>
