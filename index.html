@@ -138,12 +138,63 @@ tr.good td{background:var(--forest-soft)}
 .chip.cond{background:var(--pear-soft);color:var(--walnut)}
 .chip.later{background:var(--navy-soft);color:var(--navy)}
 footer{color:var(--muted);font-size:.85rem;padding:30px 0}
+nav.toc .grp{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:14px 0 4px 14px;font-weight:700}
+
+/* executive brief */
+.brief{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin:18px 0}
+.brief-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--walnut);padding-bottom:8px;margin-bottom:6px}
+.brief-head h3{margin:0;font-size:1.35rem}
+.brief-head span{font-size:.85rem;color:var(--muted)}
+.bq{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.bq:last-child{border-bottom:none}
+.bq .n{width:26px;height:26px;border-radius:6px;background:var(--walnut);color:var(--surface);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.85rem;margin-top:2px}
+.bq h4{font-family:inherit;font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:var(--walnut);margin:0 0 3px}
+.bq p,.bq li{margin:.2rem 0;font-size:.97rem}
+.bq ul{margin:.2rem 0;padding-left:18px}
+.rec{font-size:1.08rem;font-weight:600;border-left:4px solid var(--forest);padding-left:10px}
+.printbtn{font:inherit;font-weight:600;background:var(--walnut);color:var(--surface);border:none;border-radius:999px;padding:8px 18px;cursor:pointer}
+.backside{margin-top:16px;padding-top:12px;border-top:2px dashed var(--line)}
+.backside .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:700px){.backside .cols{grid-template-columns:1fr}}
+.backside table{font-size:.88rem;margin:4px 0}
+.backside h4{font-family:inherit;font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:var(--walnut);margin:.8rem 0 .2rem}
+.backside td,.backside th{padding:4px 6px}
+.say{background:var(--bg);border-radius:10px;padding:12px 16px;margin:10px 0;font-style:italic}
+.flow{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+.flow div{flex:1 1 150px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;position:relative}
+.flow b{display:block;color:var(--walnut);font-family:"Palatino Linotype",Palatino,Georgia,serif;font-size:1.1rem}
+.flow small{color:var(--muted)}
+
+@media print{
+  @page{size:letter;margin:.45in}
+  :root{--bg:#fff;--surface:#fff;--ink:#000;--muted:#333;--line:#bbb;color-scheme:light}
+  body{font-size:9.6pt;line-height:1.32;background:#fff}
+  nav.toc,.hero,main > section:not(#brief),footer,.noprint{display:none !important}
+  .wrap{display:block;max-width:none;padding:0}
+  main{padding:0}
+  section#brief{padding:0;border:none}
+  section#brief > h2,section#brief > .prose{display:none}
+  .brief{border:none;padding:0;margin:0}
+  .bq{padding:4px 0;break-inside:avoid}
+  .bq p,.bq li{font-size:9.6pt;margin:.1rem 0}
+  .rec{font-size:10.2pt}
+  .backside{break-before:page;border:none;margin:0;padding:0}
+  .backside table{font-size:8.6pt}
+  .backside h4{font-family:inherit;font-size:8.6pt;text-transform:uppercase;letter-spacing:.06em;color:#6B4430}
+  .backside h4{margin:.3rem 0 .1rem}
+  tr.hl td,tr.good td{background:#eee !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 <nav class="toc" aria-label="Contents">
   <ol>
+    <li class="grp">For class</li>
+    <li><a href="#brief">Executive Preparation Brief</a></li>
+    <li><a href="#roadmap">Discussion roadmap</a></li>
+    <li><a href="#drills">Prompt drills</a></li>
+    <li class="grp">Supporting analysis</li>
     <li><a href="#tldr">The case in one minute</a></li>
     <li><a href="#story">Founder and company</a></li>
     <li><a href="#products">Products, sales, channels</a></li>
@@ -156,7 +207,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0}
     <li><a href="#q4">Q4 Boutique</a></li>
     <li><a href="#q5">Q5 Subscription</a></li>
     <li><a href="#q6">Q6 What to do</a></li>
-    <li><a href="#cheat">Cold-call cheat sheet</a></li>
+    <li><a href="#cheat">Numbers and formulas</a></li>
   </ol>
 </nav>
 
@@ -164,7 +215,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0}
 <header class="hero">
   <div>
     <h1>BEWÖÖD: pricing four growth bets on one wooden bowtie</h1>
-    <p class="lede">A study digest of the NACRA case by Dolansky, Ruaud and Didier (Case Research Journal, 2020). Summary, every exhibit, worked answers, and what to say in class.</p>
+    <p class="lede">A study digest of the NACRA case by Dolansky, Ruaud and Didier (Case Research Journal, 2020). Built for MKTG 6110 team participation: a printable Executive Preparation Brief, the Opportunity → 5Cs → STP → 4Ps discussion path, prompt drills, and the full exhibit analysis behind every claim.</p>
     <div class="facts">
       <span>Lille, France</span><span>Founded March 2015</span><span>Decision date: March 2018</span><span>Flagship: Mr. Divergent, €39</span><span>3 of 4 decisions due by June</span>
     </div>
@@ -173,6 +224,192 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0}
     <g id="bt"></g>
   </svg>
 </header>
+
+<!-- BRIEF -->
+<section id="brief">
+  <h2>Executive Preparation Brief</h2>
+  <div class="prose">
+    <p>This is the one-page brief the course asks each team to bring (both sides allowed). It answers the five questions in order, and every number in it supports, challenges or refines the recommendation. Devices aren't allowed during discussion, so print it: the button below prints only this brief, front and back.</p>
+    <p class="noprint"><button class="printbtn" onclick="window.print()">Print the brief</button></p>
+  </div>
+
+  <div class="brief">
+    <div class="brief-head"><h3>BEWÖÖD: Executive Preparation Brief</h3><span>MKTG 6110 · Team ______ · Spokesperson ______</span></div>
+
+    <div class="bq"><span class="n">1</span><div>
+      <h4>Central decision</h4>
+      <p>By June 2018, Laury Bonjean must choose which Mr. Divergent growth projects to launch (Father's Day box set, two-week pop-up, Old Lille boutique) and how to price each one. She must also decide whether to build a subscription box. The real question underneath: should she <b>keep pricing by gut feel at the low end (€39)</b> when her brand story (handcrafted, local, sustainable) is the same one premium rivals sell at €50 to €95?</p>
+    </div></div>
+
+    <div class="bq"><span class="n">2</span><div>
+      <h4>Our recommendation</h4>
+      <p class="rec">Switch to value-based pricing and use the June projects to prove it: launch the box set at €49, join the pop-up (lead with the box and add a pop-up-exclusive tie at €45), accept the boutique at €39 only with the 25% margin locked in writing, and pilot the €20-per-quarter subscription in the second half of 2018.</p>
+      <p>The logic: fixed costs won't change and capacity is available, so any project with positive contribution adds profit. The only real limit is her time, so the order of launches matters.</p>
+    </div></div>
+
+    <div class="bq"><span class="n">3</span><div>
+      <h4>Evidence that best supports it</h4>
+      <ul>
+        <li><b>Demand is inelastic (Ex. 12).</b> In her own price test, going from €39 to €45 cut units only from 68 to 62 (elasticity ≈ −0.65). Revenue rose from €2,210 to €2,325 and contribution from €1,761 to €1,916. The €35 discount lost money.</li>
+        <li><b>Customers value the box at about €49 (Ex. 11).</b> In a survey of 200 customers, the "too cheap" and "too expensive" curves cross at about €48.90, and the share who find the price acceptable peaks at €50. The box adds €4.10 in materials and earns €10 more.</li>
+        <li><b>Her price contradicts her positioning (Ex. 7).</b> Rivals telling the same handcrafted story charge €50 to €95, and the survey shows customers start doubting quality when the price is too low.</li>
+        <li><b>Every option has positive incremental economics.</b> Contribution is €30.13 per box and €30.90 per pop-up tie (the €399 fee breaks even at 13 ties). The boutique adds €17.78 per new sale, and a subscriber is worth €34.73 over their lifetime.</li>
+      </ul>
+    </div></div>
+
+    <div class="bq"><span class="n">4</span><div>
+      <h4>Biggest uncertainty or risk</h4>
+      <p><b>Her own time.</b> The case calls it the binding constraint, but there's no data on hours per project, and three launches land in about three months. <i>Mitigation:</i> the box and pop-up share a single Father's Day push, the boutique is low-effort wholesale, and the subscription waits until after June.</p>
+      <p><b>Thin data.</b> The survey answers are hypothetical, the price test is small and from one setting, and there's no volume forecast for the box. <i>Mitigation:</i> start with a limited box run and treat June as the test. <b>Also:</b> a €45 tie at the pop-up and a €39 tie in Old Lille send mixed signals, so make the pop-up tie an exclusive.</p>
+    </div></div>
+
+    <div class="bq"><span class="n">5</span><div>
+      <h4>Strongest alternative, and why we rejected it</h4>
+      <p><b>"Focus: do only the box set and pop-up, and decline the boutique."</b> Arguments for it: the boutique earns only €1.48 per tie on a full-cost basis, it loses money (−€6.65) if the margin reverts to the owner's usual 50%, it may cannibalize direct sales, and it takes her time.</p>
+      <p><i>Why we rejected it:</i> allocated costs don't change, so the true gain is €17.78 per incremental sale. The deal stays profitable unless more than about 69% of boutique buyers would have bought from her anyway. Wholesale takes little of her time, and the shop puts her in front of exactly the style-conscious men she targets. We accept on conditions: the 25% margin in writing for 12 months, and tracking of whether buyers are new.</p>
+    </div></div>
+
+    <div class="backside">
+      <div class="cols">
+        <div>
+          <h4>Most important unanswered question</h4>
+          <p>How many hours does each project take her, and which earns the most contribution per hour? Second: what share of boutique buyers are new customers?</p>
+          <h4>What would change our mind</h4>
+          <ul>
+            <li>The pop-up sells fewer than 13 ties in its run → skip pop-ups in future.</li>
+            <li>More than 69% of boutique buyers are existing customers → renegotiate or exit.</li>
+            <li>The box sells poorly at €49 → test €45 at the next holiday rather than abandon the box format.</li>
+            <li>Subscriber acquisition costs more than €34.73, or most subscribers leave after year 1 → stop the subscription.</li>
+          </ul>
+          <h4>Next step beyond June</h4>
+          <p>Move the core Mr. Divergent price toward €42 to €45 once June confirms that demand is inelastic.</p>
+        </div>
+        <div>
+          <h4>Numbers to have ready</h4>
+          <table>
+            <tr><td>Net price of a €39 tie (÷1.2 VAT)</td><td class="r">€32.50</td></tr>
+            <tr><td>Variable cost / contribution per tie</td><td class="r">€6.60 / €25.90</td></tr>
+            <tr><td>Full cost / full-cost profit per tie</td><td class="r">€22.90 / €9.60</td></tr>
+            <tr class="good"><td>Box €49: net / contribution</td><td class="r">€40.83 / €30.13</td></tr>
+            <tr class="good"><td>Pop-up €45: contribution / break-even</td><td class="r">€30.90 / 13 ties</td></tr>
+            <tr><td>Pop-up test: units at €35 / €39 / €45</td><td class="r">73 / 68 / 62</td></tr>
+            <tr><td>Elasticity (midpoint)</td><td class="r">≈ −0.65</td></tr>
+            <tr class="good"><td>Boutique: wholesale / contribution</td><td class="r">€24.38 / €17.78</td></tr>
+            <tr><td>Boutique full-cost profit (25% / 50%)</td><td class="r">€1.48 / −€6.65</td></tr>
+            <tr><td>Cannibalization break-even</td><td class="r">≈ 69%</td></tr>
+            <tr class="good"><td>Subscription CLV: avg / 1-yr only</td><td class="r">€34.73 / €17.60</td></tr>
+            <tr><td>Rival prices (Ex. 7)</td><td class="r">€30 to €95</td></tr>
+          </table>
+          <h4>Pre-assigned roles</h4>
+          <p>Spokesperson ______ · Numbers ______ · Devil's advocate ______</p>
+        </div>
+      </div>
+      <h4>Talking points by discussion stage</h4>
+      <table>
+        <tr><td><b>Opportunity</b></td><td>Men's accessories growing (some categories up to +57%, 2009 to 2014), bowtie revival, fragmented rivals. Plus a pricing opportunity: inelastic demand and a price below peers.</td></tr>
+        <tr><td><b>Customers</b></td><td>Urban, chic, eco-minded, aged 18 to 40, who buy meaning, not price. Low prices make them doubt quality. Father's Day gift buyers are a second segment.</td></tr>
+        <tr><td><b>Company</b></td><td>Strong story, cheap social marketing, spare capacity. One founder whose time is the binding constraint. Bowties are only 18.5% of units.</td></tr>
+        <tr><td><b>Competitors</b></td><td>€30 to €95. Premium rivals with the same story charge €50 to €95, so at €39 she sits with the budget players.</td></tr>
+        <tr><td><b>Collaborators / Context</b></td><td>20 partner stores, the boutique owner's 25% offer, the pop-up organizer. 20% VAT in every price, 500k subscription-box users in France, June deadline.</td></tr>
+        <tr><td><b>STP</b></td><td>Box → gift buyers. Pop-up → downtown shoppers. Boutique → style-conscious men. Subscription → existing owners. Position: premium handcrafted, priced to match.</td></tr>
+        <tr><td><b>4Ps</b></td><td>Box €49 (3 knots, gift packaging). Pop-up: box plus a €45 exclusive tie. Boutique €39 at a 25% margin, in writing. Subscription €20/qtr, first box free, piloted in H2.</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <h2>Discussion roadmap: how class will unfold</h2>
+  <p class="prose">Class won't go through the case section by section. It follows the order managers make decisions in: first whether there is an opportunity, then the 5Cs, then STP, then the 4Ps. Here is what to say at each stage.</p>
+  <div class="flow">
+    <div><b>1. Opportunity</b><small>Is it worth pursuing?</small></div>
+    <div><b>2. 5Cs</b><small>What do we know?</small></div>
+    <div><b>3. STP</b><small>Who, and how positioned?</small></div>
+    <div><b>4. 4Ps</b><small>What exactly do we do?</small></div>
+  </div>
+
+  <h3>1. Is there a meaningful opportunity?</h3>
+  <div class="prose">
+    <p><b>Yes, in two ways.</b> The market is growing: revenue in some men's accessory categories grew by up to 57% from 2009 to 2014, the bowtie is back as a playful statement piece, and competition is fragmented. And there's a pricing opportunity: she is <b>leaving money on the table</b>, because demand is inelastic and her price sits below rivals with the same story. Even without new projects, repricing alone is an opportunity.</p>
+  </div>
+
+  <h3>2. The 5Cs: only the facts that move the decision</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>C</th><th>Key fact</th><th>So what for the decision</th></tr></thead>
+    <tbody>
+      <tr><td><b>Customers</b></td><td>Urban, "chic", community-minded people aged 18 to 40 who want authentic, sustainable products. In the survey, they start doubting quality when the price is too low.</td><td>They buy on meaning, not price, so a higher price supports the brand. Father's Day gift buyers are a second segment.</td></tr>
+      <tr><td><b>Company</b></td><td>Strong design and craft story, cheap social-media marketing, flexible staffing and spare capacity. But one founder, gut-feel pricing, and bowties are only 18.5% of units.</td><td>The real limit is her time, not money. All four projects rest on one product.</td></tr>
+      <tr><td><b>Competitors</b></td><td>Fragmented market, €30 to €95. Premium rivals (Focalimum €95, Melissandre €70, Guillaume €36 to €95, Uncle Pope from €50) tell the same local, handcrafted story.</td><td>At €39 she is priced with the budget rivals while telling the premium story.</td></tr>
+      <tr><td><b>Collaborators</b></td><td>About 20 partner stores, the pop-up organizer, the boutique owner (offering 25% instead of his usual 50%), the Techshop and FabLab, and a wood supplier 15 km away.</td><td>Partners shape channel margins and price consistency. Lock in the boutique's goodwill in writing.</td></tr>
+      <tr><td><b>Context</b></td><td>20% VAT is included in every price. France has 300+ subscription boxes with about 500,000 subscribers who stay 18 months on average. Father's Day is in June.</td><td>Always divide prices by 1.2. Subscription is a proven model, and June sets the deadline.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>3. STP: who each project targets, and the positioning they share</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Project</th><th>Segment targeted</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td>Box set</td><td>Gift buyers (often women buying for men) at Father's Day and other holidays</td><td>Raises the average order and introduces new wearers</td></tr>
+      <tr><td>Pop-up</td><td>Downtown Lille foot traffic and quality-seeking shoppers</td><td>Awareness and a live price test</td></tr>
+      <tr><td>Boutique</td><td>Style-conscious men wanting a chic, sporty or romantic look</td><td>New men's customers and prestige</td></tr>
+      <tr><td>Subscription</td><td>Existing Mr. Divergent owners</td><td>Loyalty, recurring revenue and customer data</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout wood"><strong>Positioning statement</strong>For urban, style-conscious men (and the people who buy gifts for them) who want accessories with meaning, BEWÖÖD is the handcrafted, sustainable wooden accessory brand from Hauts-de-France that lets them express personality, and its price should signal that quality, not undercut it.</div>
+
+  <h3>4. The 4Ps for each project</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>Product</th><th>Price</th><th>Place</th><th>Promotion</th></tr></thead>
+    <tbody>
+      <tr><td><b>Box set</b></td><td>Mr. Divergent plus 2 extra knots (3 looks) in gift packaging</td><td><b>€49</b> (survey optimum)</td><td>Online, own shop, pop-up and partners</td><td>Father's Day gift angle on social media and the e-mail list</td></tr>
+      <tr><td><b>Pop-up</b></td><td>The box plus an exclusive-knot Mr. Divergent</td><td>Box €49, tie <b>€45</b></td><td>Window corner, downtown Lille, for 2 weeks</td><td>Window display, staff selling the story, collect e-mails</td></tr>
+      <tr><td><b>Boutique</b></td><td>Core Mr. Divergent range</td><td><b>€39</b> shelf price (no conflict with partners or online)</td><td>Old Lille, 25% retail margin</td><td>Co-branded display, owner as advocate</td></tr>
+      <tr><td><b>Subscription</b></td><td>3 removable knots per quarter, personalized</td><td><b>€20/qtr</b>, first box free, 1-year commitment</td><td>In-house, shipped (owns the data)</td><td>Offer to existing owners via e-mail and social media</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- DRILLS -->
+<section id="drills">
+  <h2>Prompt drills</h2>
+  <p class="prose">Teams are picked at random and given one of three prompts. Everyone gets the same score, so every member should be able to give each answer below in under a minute, without notes.</p>
+
+  <h3>Prompt A: "Present your recommendation"</h3>
+  <div class="say">"BEWÖÖD should stop pricing like a budget brand. Her own price test shows demand is inelastic: raising the tie from €39 to €45 lost only 6 of 68 sales and increased contribution. So by June she should launch the Father's Day box at €49, which is where the customer survey says it's neither too cheap nor too expensive. She should also take the pop-up, which breaks even at just 13 ties, selling the box and an exclusive tie at €45. And she should accept the boutique at €39, but only with the 25% margin in writing, because each new customer there adds about €18. The subscription is promising, with a lifetime value of about €35, but her time is the bottleneck, so she should pilot it after June."</div>
+
+  <h3>Prompt B: "What's the most important unanswered question?"</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Question</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr class="good"><td><b>How many hours does each project cost her?</b> (lead with this one)</td><td>The case says her time is the binding constraint, yet gives no data on it. The right ranking is contribution per hour of her time, not contribution per unit.</td></tr>
+      <tr><td>What share of boutique buyers would have bought from her anyway?</td><td>Above about 69%, the boutique destroys value.</td></tr>
+      <tr><td>How many boxes will sell at €49?</td><td>The survey gives the right price but no volume, so we don't know the size of the prize.</td></tr>
+      <tr><td>Does the pop-up price test hold in her normal channels?</td><td>The test was one setting with small numbers, and a pop-up audience may be less price-sensitive than online shoppers.</td></tr>
+      <tr><td>What does it cost to acquire a subscriber?</td><td>The CLV of €34.73 is the ceiling; we don't know if she can get under it.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Prompt C: "Propose an alternative recommendation"</h3>
+  <div class="two">
+    <div class="panel"><h4>Alt 1: Reprice first</h4><p>Raise Mr. Divergent to €45 in every channel now, then add only the box set. It's backed by the elasticity and positioning evidence and takes little of her time.</p><p><i>Weakness:</i> it rests on one small test, and the 20 partner stores and online customers face a sudden 15% increase.</p></div>
+    <div class="panel"><h4>Alt 2: Subscription first</h4><p>Prioritize the subscription box over the boutique. It brings recurring revenue, owned data and loyalty, in a market of 500,000 subscribers.</p><p><i>Weakness:</i> it's a new business model with quarterly fulfilment work and an unknown acquisition cost, and it isn't due by June.</p></div>
+  </div>
+
+  <h3>Pushback you'll hear, and how to respond</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Challenge</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>"The boutique only makes €1.48 per tie."</td><td>That number subtracts allocated costs that don't change. The decision-relevant figure is €17.78 contribution per new sale.</td></tr>
+      <tr><td>"The survey is hypothetical."</td><td>Agreed, so treat €49 as a starting price and use a limited run to test it. The survey also agrees with the price test and with rival pricing.</td></tr>
+      <tr><td>"A €45 tie at the pop-up conflicts with €39 elsewhere."</td><td>Make it a pop-up exclusive (special knot) and lead with the box, so customers aren't comparing like with like.</td></tr>
+      <tr><td>"She chose €39 on purpose to stay accessible."</td><td>Accessibility isn't her positioning: customers buy craft and meaning, and a low price makes them doubt quality.</td></tr>
+      <tr><td>"Doing all four will burn her out."</td><td>That's why we sequence: the box and pop-up share one push, the boutique is wholesale, and the subscription waits.</td></tr>
+      <tr><td>"Ignore VAT and the subscription earns €51.40."</td><td>VAT goes to the state, so €34.73 is the real figure.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout navy"><strong>Being willing to revise counts in your favor</strong>If the class raises something new (for example, that she can't staff the pop-up), say what changes and why: "Given that, we'd drop the pop-up and put the box into partner stores, because the box carries the higher margin anyway." Changing your answer in response to evidence is one of the listed criteria for a strong contribution.</div>
+</section>
 
 <!-- TLDR -->
 <section id="tldr">
@@ -526,7 +763,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0}
 
 <!-- CHEAT -->
 <section id="cheat">
-  <h2>Cold-call cheat sheet</h2>
+  <h2>Numbers and formulas</h2>
   <div class="two">
     <div class="panel">
       <h3 style="margin-top:0">Numbers to remember</h3>
